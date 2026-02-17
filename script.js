@@ -4,11 +4,14 @@
    ============================================================ */
 
 // 🟢 CONFIGURATION: REPLACE THESE WITH YOUR KEYS
-const SUPABASE_URL = 'sb_publishable_Rw8TQ4r8dWjG-WGmwzKKog_ZNHxazv2';
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'yrizqxaoykexrwfcktdu';
+const SUPABASE_KEY = 'sb_publishable_Rw8TQ4r8dWjG-WGmwzKKog_ZNHxazv2';
 
-// Initialize Supabase Client
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ✅ FIX 1: Renamed variable from `supabase` → `supabaseClient`
+//    The old code did:  const supabase = supabase.createClient(...)
+//    That crashes because `supabase` (the library) and your variable had the same name.
+//    Every reference below has been updated to use `supabaseClient`.
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── SEED DATA (Static Content) ──────────────────────────────
 // We keep these in JS for the frontend UI, but bookings go to DB.
@@ -105,18 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
 async function refreshData() {
   console.log("Fetching data from Supabase...");
   
+  // ✅ FIX 1 applied: using `supabaseClient` instead of `supabase` everywhere below
+
   // 1. Fetch Customers
-  let { data: customers, error: errC } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
+  let { data: customers, error: errC } = await supabaseClient.from('customers').select('*').order('created_at', { ascending: false });
   if (errC) console.error("Error fetching customers:", errC);
   else db.customers = customers;
 
   // 2. Fetch Bookings
-  let { data: bookings, error: errB } = await supabase.from('bookings').select('*').order('created_at', { ascending: false });
+  let { data: bookings, error: errB } = await supabaseClient.from('bookings').select('*').order('created_at', { ascending: false });
   if (errB) console.error("Error fetching bookings:", errB);
   else db.bookings = bookings;
 
   // 3. Fetch Payments
-  let { data: payments, error: errP } = await supabase.from('payments').select('*').order('created_at', { ascending: false });
+  let { data: payments, error: errP } = await supabaseClient.from('payments').select('*').order('created_at', { ascending: false });
   if (errP) console.error("Error fetching payments:", errP);
   else db.payments = payments;
 
@@ -141,7 +146,7 @@ document.getElementById('bookingForm')?.addEventListener('submit', async functio
     const csr = CSR_TEAM.find(c => c.id == document.getElementById('csrId').value);
 
     // 1. Insert Customer
-    const { data: custData, error: custErr } = await supabase
+    const { data: custData, error: custErr } = await supabaseClient
       .from('customers')
       .insert([{
         fname: document.getElementById('custFname').value.trim(),
@@ -157,7 +162,7 @@ document.getElementById('bookingForm')?.addEventListener('submit', async functio
     const newCustomer = custData[0];
 
     // 2. Insert Booking
-    const { data: bookData, error: bookErr } = await supabase
+    const { data: bookData, error: bookErr } = await supabaseClient
       .from('bookings')
       .insert([{
         customer_id: newCustomer.id,
@@ -179,7 +184,7 @@ document.getElementById('bookingForm')?.addEventListener('submit', async functio
 
     // 3. Insert Payment
     const method = document.getElementById('payMethod').value;
-    const { error: payErr } = await supabase
+    const { error: payErr } = await supabaseClient
       .from('payments')
       .insert([{
         customer_id: newCustomer.id,
@@ -226,10 +231,7 @@ document.getElementById('bookingForm')?.addEventListener('submit', async functio
 async function deleteRecord(table, id) {
   if (!confirm('Delete this record? This cannot be undone.')) return;
   
-  // Map JS table names to Supabase table names if needed
-  // (In our case they match: customers, bookings, payments)
-  
-  const { error } = await supabase.from(table).delete().eq('id', id);
+  const { error } = await supabaseClient.from(table).delete().eq('id', id);
   
   if (error) {
     alert("Error deleting: " + error.message);
@@ -242,14 +244,14 @@ async function clearAllData() {
   if (!confirm('DANGER: This will wipe ALL database records. Continue?')) return;
   
   // Delete in order to respect Foreign Keys
-  await supabase.from('payments').delete().neq('id', 0); // Delete all
-  await supabase.from('bookings').delete().neq('id', 0);
-  await supabase.from('customers').delete().neq('id', 0);
+  await supabaseClient.from('payments').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await supabaseClient.from('bookings').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  await supabaseClient.from('customers').delete().neq('id', '00000000-0000-0000-0000-000000000000');
   
   refreshData();
 }
 
-// ── UI HELPERS (Unchanged mostly) ──────────────────────────────
+// ── UI HELPERS ──────────────────────────────────────────────────
 
 function setupNavScroll() {
   window.addEventListener('scroll', () => {
@@ -544,9 +546,6 @@ function switchTab(tab) {
 function filterRecords() {
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
   const sf = document.getElementById('statusFilter')?.value || '';
-  
-  // Note: We are filtering the LOCAL db copy (fetched from Supabase)
-  // For a large app, you would do this filtering on the server side (.select().ilike())
   renderBookingsTable(q, sf);
   renderCustomersTable(q, sf);
   renderPaymentsTable(q, sf);
@@ -562,7 +561,6 @@ function renderBookingsTable(q, sf) {
   const empty = document.getElementById('emptyBookings');
   if (!tbody) return;
 
-  // Use optional chaining for safe access
   let data = (db.bookings || []).filter(b =>
     (!q || (
        (b.customer_name || '').toLowerCase().includes(q) ||

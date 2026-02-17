@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkySurfers Travel & Tours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <span class="logo-plane">✈</span>
+        <div class="logo-words">
+          <span class="logo-text">SkySurfers</span>
+          <span class="logo-sub">Travel & Tours</span>
+        </div>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#packages" class="nav-link">Packages</a></li>
+        <li><a href="#booking" class="nav-link">Book Now</a></li>
+        <li><a href="#records" class="nav-link">Records</a></li>
+        <li><a href="#tours" class="nav-link">Tours</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=1600&q=80" alt="Philippines" class="hero-img"/>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🏅 DOT Accredited &nbsp;·&nbsp; PTAA &nbsp;·&nbsp; PATA Member</div>
+      <h1 class="hero-title">Discover the<br><em>Philippines</em><br>&amp; Beyond</h1>
+      <p class="hero-subtitle">Premier inbound &amp; outbound travel agency crafting unforgettable journeys — from island paradise to cultural heartlands.</p>
+      <div class="hero-cta">
+        <a href="#booking" class="btn-primary">✈ Book Your Trip</a>
+        <a href="#packages" class="btn-ghost">View Packages</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" id="totalBookings">0</span><span class="stat-label">Bookings</span></div>
+        <div class="stat-div"></div>
+        <div class="stat"><span class="stat-num">10</span><span class="stat-label">Packages</span></div>
+        <div class="stat-div"></div>
+        <div class="stat"><span class="stat-num">10</span><span class="stat-label">Destinations</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Baguio City</span><span class="mdot">✦</span><span>Cebu</span><span class="mdot">✦</span>
+      <span>Boracay</span><span class="mdot">✦</span><span>El Nido, Palawan</span><span class="mdot">✦</span>
+      <span>Siargao Island</span><span class="mdot">✦</span><span>Bohol</span><span class="mdot">✦</span>
+      <span>Davao City</span><span class="mdot">✦</span><span>Ilocos</span><span class="mdot">✦</span>
+      <span>Coron, Palawan</span><span class="mdot">✦</span><span>Metro Manila</span><span class="mdot">✦</span>
+      <span>Baguio City</span><span class="mdot">✦</span><span>Cebu</span><span class="mdot">✦</span>
+      <span>Boracay</span><span class="mdot">✦</span><span>El Nido, Palawan</span><span class="mdot">✦</span>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <section class="section" id="packages">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">Travel Packages</span>
+        <h2 class="section-title">Choose Your Adventure</h2>
+        <p class="section-sub">From city explorations to island escapes — all packages curated by our expert team.</p>
+      </div>
+      <div class="packages-grid" id="packagesGrid"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">Gallery</span>
+        <h2 class="section-title">Popular Destinations</h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-card gc-tall">
+          <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=800&q=80" alt="Palawan"/>
+          <div class="gallery-label"><span>El Nido</span><small>Palawan</small></div>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" alt="Boracay"/>
+          <div class="gallery-label"><span>Boracay</span><small>Aklan</small></div>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80" alt="Coron"/>
+          <div class="gallery-label"><span>Coron</span><small>Palawan</small></div>
+        </div>
+        <div class="gallery-card gc-wide">
+          <img src="https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800&q=80" alt="Chocolate Hills"/>
+          <div class="gallery-label"><span>Chocolate Hills</span><small>Bohol</small></div>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1573790387438-4da905039392?w=800&q=80" alt="Baguio"/>
+          <div class="gallery-label"><span>Baguio City</span><small>Benguet</small></div>
+        </div>
+        <div class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80" alt="Siargao"/>
+          <div class="gallery-label"><span>Siargao</span><small>Surigao del Norte</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section class="section booking-bg" id="booking">
+    <div class="section-inner">
+      <div class="section-header light">
+        <span class="section-tag light">Reservations</span>
+        <h2 class="section-title light">Book Your Journey</h2>
+        <p class="section-sub light">Fill in your details and our CSR team will confirm your booking within 24 hours.</p>
+      </div>
+      <div class="booking-layout">
+        <div class="booking-form-wrap">
+          <div class="steps-bar">
+            <div class="step-item active" id="stepItem1"><div class="step-num">1</div><div class="step-label">Personal Info</div></div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="stepItem2"><div class="step-num">2</div><div class="step-label">Trip Details</div></div>
+            <div class="step-connector"></div>
+            <div class="step-item" id="stepItem3"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+          </div>
+
+          <form id="bookingForm" novalidate>
+
+            <!-- STEP 1 -->
+            <div class="form-step active" id="step1">
+              <h3 class="step-heading">Personal Information</h3>
+              <div class="form-row">
+                <div class="fg"><label>First Name *</label><input type="text" id="custFname" placeholder="Juan" required/><span class="ferr" id="e-custFname"></span></div>
+                <div class="fg"><label>Last Name *</label><input type="text" id="custLname" placeholder="Dela Cruz" required/><span class="ferr" id="e-custLname"></span></div>
+              </div>
+              <div class="form-row">
+                <div class="fg">
+                  <label>Email Address *</label>
+                    <input 
+                    type="email" 
+                    id="custEmail" 
+                    placeholder="juan@email.com" 
+                    required 
+                    pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                    title="Please enter a valid email address (e.g., name@example.com)"/>
+                    <span class="ferr" id="e-custEmail"></span>
+                </div>
+                <div class="fg"><label>Phone Number *</label><input type="tel" id="custPhone" placeholder="09XXXXXXXXX" required/><span class="ferr" id="e-custPhone"></span></div>
+              </div>
+              <div class="fg"><label>Address *</label><input type="text" id="custAddress" placeholder="123 Main St., City" required/><span class="ferr" id="e-custAddress"></span></div>
+              <div class="fg"><label>Customer Type</label>
+                <select id="custType"><option value="Regular">Regular</option><option value="VIP">VIP</option></select>
+              </div>
+              <div class="form-nav"><button type="button" class="btn-next" onclick="nextStep(2)">Next: Trip Details →</button></div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="form-step" id="step2">
+              <h3 class="step-heading">Trip Details</h3>
+              <div class="form-row">
+                <div class="fg">
+                  <label>Travel Package *</label>
+                  <select id="packageId" required onchange="onPackageChange()"><option value="">-- Select Package --</option></select>
+                  <span class="ferr" id="e-packageId"></span>
+                </div>
+                <div class="fg"><label>Package Price (₱)</label><input type="text" id="packagePrice" readonly placeholder="Auto-filled"/></div>
+              </div>
+              <div class="fg">
+                <label>Itinerary *</label>
+                <select id="itineraryId" required onchange="onItineraryChange()"><option value="">-- Select Itinerary --</option></select>
+                <span class="ferr" id="e-itineraryId"></span>
+              </div>
+              <div class="itinerary-preview" id="itineraryPreview"><em>Select an itinerary to see details</em></div>
+              <div class="form-row">
+                <div class="fg"><label>Booking Date *</label><input type="date" id="bookDate" required/><span class="ferr" id="e-bookDate"></span></div>
+                <div class="fg"><label>Booking Status</label>
+                  <select id="bookStatus"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option></select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="fg"><label>Assigned CSR</label>
+                  <select id="csrId"><option value="">-- Select CSR --</option></select>
+                </div>
+                <div class="fg"><label>Tour Type</label>
+                  <select id="tourType"><option value="Group Tour">Group Tour</option><option value="Private Tour">Private Tour</option></select>
+                </div>
+              </div>
+              <div class="form-nav">
+                <button type="button" class="btn-back" onclick="prevStep(1)">← Back</button>
+                <button type="button" class="btn-next" onclick="nextStep(3)">Next: Payment →</button>
+              </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="form-step" id="step3">
+              <h3 class="step-heading">Payment Details</h3>
+              <div class="form-row">
+                <div class="fg">
+                  <label>Payment Method *</label>
+                  <select id="payMethod" required onchange="togglePayFields()">
+                    <option value="">-- Select Method --</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="GCash">GCash</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+                  </select>
+                  <span class="ferr" id="e-payMethod"></span>
+                </div>
+                <div class="fg"><label>Amount (₱) *</label><input type="number" id="payAmount" placeholder="0.00" required/><span class="ferr" id="e-payAmount"></span></div>
+              </div>
+              <div id="ccFields" class="pay-extra" style="display:none">
+                <div class="form-row">
+                  <div class="fg"><label>Card Type</label><select id="ccType"><option>Visa</option><option>Mastercard</option><option>JCB</option></select></div>
+                  <div class="fg"><label>Card Number</label><input type="text" id="ccNumber" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19"/></div>
+                </div>
+                <div class="fg"><label>Expiry Date</label><input type="month" id="ccExpiry"/></div>
+              </div>
+              <div id="btFields" class="pay-extra" style="display:none">
+                <div class="form-row">
+                  <div class="fg"><label>Bank Name</label><input type="text" id="btBank" placeholder="BDO, BPI, Metrobank..."/></div>
+                  <div class="fg"><label>Reference Number</label><input type="text" id="btRef" placeholder="REF-XXXXXXXXXX"/></div>
+                </div>
+              </div>
+              <div id="cashFields" class="pay-extra" style="display:none">
+                <div class="fg"><label>Official Receipt Number</label><input type="text" id="cashReceipt" placeholder="OR-XXXXXXXXXX"/></div>
+              </div>
+              <div class="fg"><label>Payment Status</label>
+                <select id="payStatus"><option value="Pending">Pending</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select>
+              </div>
+              <div class="booking-summary" id="bookingSummary">
+                <h4>📋 Booking Summary</h4>
+                <div id="summaryGrid" class="summary-grid"></div>
+              </div>
+              <div class="form-nav">
+                <button type="button" class="btn-back" onclick="prevStep(2)">← Back</button>
+                <button type="submit" class="btn-submit">✈ Confirm Booking</button>
+              </div>
+            </div>
+
+          </form>
+
+          <div class="toast" id="toast">
+            <span class="toast-icon">✓</span>
+            <div><strong>Booking Confirmed!</strong><p>Your reservation has been saved.</p></div>
+          </div>
+        </div>
+
+        <div class="booking-sidebar">
+          <div class="sidebar-card">
+            <h4>👥 CSR Team</h4>
+            <div id="csrList" class="staff-list"></div>
+          </div>
+          <div class="sidebar-card">
+            <h4>🗺 Tour Coordinators</h4>
+            <div id="coordinatorList" class="staff-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECORDS -->
+  <section class="section" id="records">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">Live Database</span>
+        <h2 class="section-title">Booking Records</h2>
+        <p class="section-sub">All customer data, payments, and reservations are stored and displayed in real time.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="stats-card"><div class="si">📋</div><div class="sv"><span class="sn" id="statBookings">0</span><span>Total Bookings</span></div></div>
+        <div class="stats-card"><div class="si">✅</div><div class="sv"><span class="sn" id="statConfirmed">0</span><span>Confirmed</span></div></div>
+        <div class="stats-card"><div class="si">💰</div><div class="sv"><span class="sn" id="statRevenue">₱0</span><span>Total Revenue</span></div></div>
+        <div class="stats-card"><div class="si">⭐</div><div class="sv"><span class="sn" id="statVIP">0</span><span>VIP Customers</span></div></div>
+      </div>
+
+      <div class="record-tabs">
+        <button class="rtab active" onclick="switchTab('bookings')">📋 Bookings</button>
+        <button class="rtab" onclick="switchTab('customers')">👤 Customers</button>
+        <button class="rtab" onclick="switchTab('payments')">💳 Payments</button>
+        <button class="rtab" onclick="switchTab('tourtab')">🗺 Tours</button>
+      </div>
+
+      <div class="table-controls">
+        <div class="search-wrap"><input type="text" id="searchInput" placeholder="Search records..." oninput="filterRecords()"/><span>🔍</span></div>
+        <select id="statusFilter" onchange="filterRecords()">
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+        <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn-clear" onclick="clearAllData()">🗑 Clear All</button>
+      </div>
+
+      <div class="tab-content active" id="tab-bookings">
+        <div class="table-wrap"><table class="data-table">
+          <thead><tr><th>#</th><th>Customer</th><th>Package</th><th>Itinerary</th><th>Tour Type</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="bookingsBody"></tbody>
+        </table></div>
+        <div class="empty-state hidden" id="emptyBookings"><span>✈️</span><p>No bookings yet. Be the first to book!</p></div>
+      </div>
+
+      <div class="tab-content hidden" id="tab-customers">
+        <div class="table-wrap"><table class="data-table">
+          <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Type</th><th>Actions</th></tr></thead>
+          <tbody id="customersBody"></tbody>
+        </table></div>
+        <div class="empty-state hidden" id="emptyCustomers"><span>👤</span><p>No customers yet.</p></div>
+      </div>
+
+      <div class="tab-content hidden" id="tab-payments">
+        <div class="table-wrap"><table class="data-table">
+          <thead><tr><th>Pay ID</th><th>Customer</th><th>Book ID</th><th>Amount</th><th>Method</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="paymentsBody"></tbody>
+        </table></div>
+        <div class="empty-state hidden" id="emptyPayments"><span>💳</span><p>No payments yet.</p></div>
+      </div>
+
+      <div class="tab-content hidden" id="tab-tourtab">
+        <div class="table-wrap"><table class="data-table">
+          <thead><tr><th>Tour ID</th><th>Tour Name</th><th>Date</th><th>Location</th></tr></thead>
+          <tbody id="toursBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOURS -->
+  <section class="section tours-section" id="tours">
+    <div class="section-inner">
+      <div class="section-header">
+        <span class="section-tag">Schedules</span>
+        <h2 class="section-title">Upcoming Tours</h2>
+      </div>
+      <div class="tours-grid" id="toursGrid"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo"><span>✈</span> SkySurfers</div>
+        <p>DOT Accredited · PTAA Member · PATA Member</p>
+        <p>Inbound &amp; Outbound Travel Agency</p>
+      </div>
+      <div class="footer-col"><h5>Services</h5><a href="#">Incentive Tours</a><a href="#">Leisure Travel</a><a href="#">Educational Trips</a><a href="#">Religious / Pilgrimage</a></div>
+      <div class="footer-col"><h5>Company</h5><a href="#">About Us</a><a href="#">Our Team</a><a href="#">Contact</a><a href="#">Privacy Policy</a></div>
+      <div class="footer-col"><h5>Contact</h5><p>📧 info@skysurfers.com.ph</p><p>📞 (02) 8XXX-XXXX</p><p>📍 Metro Manila, Philippines</p></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 SkySurfers Travel & Tours · Binggoy · Villanueva · Martinez · Pinlac — Asia Pacific College BSIT-243</p></div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

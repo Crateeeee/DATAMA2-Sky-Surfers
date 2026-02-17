@@ -3,15 +3,13 @@
    Powered by Supabase (Real Cloud Database)
    ============================================================ */
 
-// 🟢 CONFIGURATION: REPLACE THESE WITH YOUR KEYS
-const SUPABASE_URL = 'yrizqxaoykexrwfcktdu';
+// 🟢 CONFIGURATION
+// ✅ FIX 2: Full URL format must be https://[PROJECT_ID].supabase.co
+const SUPABASE_URL = 'https://yrizqxaoykexrwfcktdu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Rw8TQ4r8dWjG-WGmwzKKog_ZNHxazv2';
 
-// ✅ FIX 1: Renamed variable from `supabase` → `supabaseClient`
-//    The old code did:  const supabase = supabase.createClient(...)
-//    That crashes because `supabase` (the library) and your variable had the same name.
-//    Every reference below has been updated to use `supabaseClient`.
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ✅ FIX 3: The CDN exposes the library as window.supabase — use window.supabase.createClient
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── SEED DATA (Static Content) ──────────────────────────────
 // We keep these in JS for the frontend UI, but bookings go to DB.

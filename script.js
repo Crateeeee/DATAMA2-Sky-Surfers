@@ -228,13 +228,58 @@ document.getElementById('bookingForm')?.addEventListener('submit', async functio
 
 async function deleteRecord(table, id) {
   if (!confirm('Delete this record? This cannot be undone.')) return;
-  
-  const { error } = await supabaseClient.from(table).delete().eq('id', id);
-  
-  if (error) {
-    alert("Error deleting: " + error.message);
-  } else {
+
+  try {
+    // Handle foreign key constraints by deleting child records first
+    if (table === 'bookings') {
+      // Delete any payments linked to this booking first
+      const { error: payErr } = await supabaseClient
+        .from('payments')
+        .delete()
+        .eq('booking_id', id);
+      if (payErr) throw payErr;
+    }
+
+    if (table === 'customers') {
+      // Get all bookings for this customer
+      const { data: custBookings } = await supabaseClient
+        .from('bookings')
+        .select('id')
+        .eq('customer_id', id);
+
+      if (custBookings && custBookings.length > 0) {
+        const bookingIds = custBookings.map(b => b.id);
+        // Delete payments linked to those bookings
+        const { error: payErr } = await supabaseClient
+          .from('payments')
+          .delete()
+          .in('booking_id', bookingIds);
+        if (payErr) throw payErr;
+      }
+
+      // Delete payments linked directly to this customer
+      const { error: payErr2 } = await supabaseClient
+        .from('payments')
+        .delete()
+        .eq('customer_id', id);
+      if (payErr2) throw payErr2;
+
+      // Delete bookings for this customer
+      const { error: bookErr } = await supabaseClient
+        .from('bookings')
+        .delete()
+        .eq('customer_id', id);
+      if (bookErr) throw bookErr;
+    }
+
+    // Now delete the main record
+    const { error } = await supabaseClient.from(table).delete().eq('id', id);
+    if (error) throw error;
+
     refreshData();
+  } catch (err) {
+    alert("Error deleting: " + err.message);
+    console.error(err);
   }
 }
 
